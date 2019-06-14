@@ -6,13 +6,14 @@ require 'grpc'
 require 'juke_box_services_pb'
 
 class JukeBoxImpl < Jukebox::JukeBox::Service
-  def play_song(request)
+  def play_song(request, _call)
     p request
-    SongResponse.new(artisit: 'aa', title: 'a Song')
+    song = Jukebox::Song.new(artist: 'aa', title: 'a Song')
+    Jukebox::SongResponse.new(song: song)
   end
 end
 
-addr = '0.0.0.0:8080'
+addr = '0.0.0.0:50051'
 
 server = GRPC::RpcServer.new
 
