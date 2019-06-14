@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package jukebox;
+
+service JukeBox {
+  rpc PlaySong(SongRequest) returns (SongResponse) {}
+}
+
+enum Genre {
+  POP = 0;
+  ROCK = 1;
+  JAZZ = 2;
+  CLASSIC = 3;
+}
+
+message Song {
+  string title = 1;
+  string artist = 2;
+}
+
+// The request message containing genre listener wants to listen
+message SongRequest {
+  Genre genre = 1;
+}
+
+// The response message containing song of genre
+message SongResponse {
+  Song song = 1;
+}
+
