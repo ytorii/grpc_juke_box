@@ -7,14 +7,13 @@ require 'juke_box_services_pb'
 
 def main
   stub = Jukebox::JukeBox::Stub.new('localhost:50051', :this_channel_is_insecure)
-  request = Jukebox::SongRequest.new
-  pp request
-  begin
-    selected_song = stub.play_song(request)
-    pp selected_song
-  rescue => e
-    pp e
-  end
+  genre = ARGV.size > 0 ?  ARGV[0] : :POP
+
+  request = Jukebox::GenreRequest.new(genre: genre)
+  response = stub.choose_song(request)
+  title = response.title
+
+  puts "Your song is: #{title}"
 end
 
 main

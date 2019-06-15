@@ -14,7 +14,7 @@ module Jukebox
       self.unmarshal_class_method = :decode
       self.service_name = 'jukebox.JukeBox'
 
-      rpc :PlaySong, SongRequest, SongResponse
+      rpc :ChooseSong, GenreRequest, TitleResponse
     end
 
     Stub = Service.rpc_stub_class
