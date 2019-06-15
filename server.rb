@@ -19,9 +19,9 @@ class LylicEnumerator
     return enum_for(:each) unless block_given?
 
     @lylics.each do |lylic|
-      p lylic
       # Assuming some downloading or processing.
       sleep 1
+      puts lylic
       yield Jukebox::LylicResponse.new(lylic: lylic)
     end
   end

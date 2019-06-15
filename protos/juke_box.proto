@@ -3,7 +3,7 @@ syntax = "proto3";
 package jukebox;
 
 service JukeBox {
-  rpc Choose(SongRequest) returns (TitleResponse) {}
+  rpc Choose(TitleRequest) returns (TitleResponse) {}
   rpc Play(SongRequest) returns (stream LylicResponse) {}
 }
 
