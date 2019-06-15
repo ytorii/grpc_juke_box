@@ -5,22 +5,23 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("juke_box.proto", :syntax => :proto3) do
-    add_message "jukebox.GenreRequest" do
-      optional :genre, :enum, 1, "jukebox.Genre"
+    add_message "jukebox.TitleRequest" do
+    end
+    add_message "jukebox.SongRequest" do
+      optional :title, :string, 1
     end
     add_message "jukebox.TitleResponse" do
       optional :title, :string, 1
     end
-    add_enum "jukebox.Genre" do
-      value :POP, 0
-      value :ROCK, 1
-      value :ANIME, 2
+    add_message "jukebox.LylicResponse" do
+      optional :lylic, :string, 1
     end
   end
 end
 
 module Jukebox
-  GenreRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.GenreRequest").msgclass
+  TitleRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.TitleRequest").msgclass
+  SongRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.SongRequest").msgclass
   TitleResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.TitleResponse").msgclass
-  Genre = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.Genre").enummodule
+  LylicResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jukebox.LylicResponse").msgclass
 end

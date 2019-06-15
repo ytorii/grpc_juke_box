@@ -5,15 +5,34 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 require 'grpc'
 require 'juke_box_services_pb'
 
+HOST = 'localhost:50051'.freeze
+
+def choose
+  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+  request = Jukebox::TitleRequest.new
+
+  response = stub.choose(request)
+  response.title
+end
+
+def play(title)
+  request = Jukebox::SongRequest.new(title: title)
+  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+
+  responses = stub.play(request)
+
+  puts "Now playing: #{title}"
+
+  responses.each do |res|
+    puts res.lylic
+  end
+
+  puts 'Thank you for listening!'
+end
+
 def main
-  stub = Jukebox::JukeBox::Stub.new('localhost:50051', :this_channel_is_insecure)
-  genre = ARGV.size > 0 ?  ARGV[0] : :POP
-
-  request = Jukebox::GenreRequest.new(genre: genre)
-  response = stub.choose_song(request)
-  title = response.title
-
-  puts "Your song is: #{title}"
+  title = choose
+  play(title)
 end
 
 main

@@ -3,21 +3,24 @@ syntax = "proto3";
 package jukebox;
 
 service JukeBox {
-  rpc ChooseSong(GenreRequest) returns (TitleResponse) {}
-}
-
-enum Genre {
-  POP = 0;
-  ROCK = 1;
-  ANIME = 2;
+  rpc Choose(SongRequest) returns (TitleResponse) {}
+  rpc Play(SongRequest) returns (stream LylicResponse) {}
 }
 
 // The request message containing genre listener wants to listen
-message GenreRequest {
-  Genre genre = 1;
+message TitleRequest {}
+
+// The request message containing genre listener wants to listen
+message SongRequest {
+  string title = 1;
+}
+
+// The response message containing title of song
+message TitleResponse {
+  string title = 1;
 }
 
 // The response message containing song of genre
-message TitleResponse {
-  string title = 1;
+message LylicResponse {
+  string lylic = 1;
 }
