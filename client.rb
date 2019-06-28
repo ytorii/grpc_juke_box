@@ -15,24 +15,9 @@ def choose
   response.title
 end
 
-def play(title)
-  request = Jukebox::SongRequest.new(title: title)
-  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
-
-  responses = stub.play(request)
-
-  puts "Now playing: #{title}"
-
-  responses.each do |res|
-    puts res.lylic
-  end
-
-  puts 'Thank you for listening!'
-end
-
 def main
   title = choose
-  play(title)
+  p title
 end
 
 main

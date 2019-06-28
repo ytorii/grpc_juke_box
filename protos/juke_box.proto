@@ -4,23 +4,10 @@ package jukebox;
 
 service JukeBox {
   rpc Choose(TitleRequest) returns (TitleResponse) {}
-  rpc Play(SongRequest) returns (stream LylicResponse) {}
 }
 
-// The request message containing genre listener wants to listen
 message TitleRequest {}
 
-// The request message containing genre listener wants to listen
-message SongRequest {
-  string title = 1;
-}
-
-// The response message containing title of song
 message TitleResponse {
   string title = 1;
-}
-
-// The response message containing song of genre
-message LylicResponse {
-  string lylic = 1;
 }

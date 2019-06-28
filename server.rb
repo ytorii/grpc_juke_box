@@ -10,34 +10,10 @@ require 'grpc'
 require 'juke_box_services_pb'
 require 'song_list'
 
-class LylicEnumerator
-  def initialize(lylics)
-    @lylics = lylics
-  end
-
-  def each
-    return enum_for(:each) unless block_given?
-
-    @lylics.each do |lylic|
-      # Assuming some downloading or processing.
-      sleep 1
-      puts lylic
-      yield Jukebox::LylicResponse.new(lylic: lylic)
-    end
-  end
-end
-
 class JukeBoxServiceImpl < Jukebox::JukeBox::Service
   def choose(_request, _call)
     chosen_song = SongList::LIST.sample
     Jukebox::TitleResponse.new(title: chosen_song[:title])
-  end
-
-  def play(request, _call)
-    title = request.title
-    requested_song = SongList::LIST.find { |song| song[:title] == title }
-
-    LylicEnumerator.new(requested_song[:lylics]).each
   end
 end
 
