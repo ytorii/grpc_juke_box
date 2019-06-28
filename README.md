@@ -171,7 +171,7 @@ message LylicResponse {
     requested_song = SongList::LIST.find { |song| song[:title] == title }
 
     LylicEnumerator.new(requested_song[:lylics]).each
-
+  end
 ```
 
 - Streamで渡すEnumeratorの実装
