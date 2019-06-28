@@ -11,7 +11,7 @@ RubyではじめるgRPCハンズオンで使用するコードのリポジトリ
 ```
 syntax = "proto3";
 
-package jukebox;
+package kyotorb;
 
 service JukeBox {
   rpc Choose(TitleRequest) returns (TitleResponse) {}
@@ -50,10 +50,10 @@ require 'song_list'
 
 - JukeBoxの実装
 ```
-class JukeBoxServiceImpl < Jukebox::JukeBox::Service
+class JukeBoxServiceImpl < Kyotorb::JukeBox::Service
   def choose(_request, _call)
     chosen_song = SongList::LIST.sample
-    Jukebox::TitleResponse.new(title: chosen_song[:title])
+    Kyotorb::TitleResponse.new(title: chosen_song[:title])
   end
 end
 ```
@@ -105,8 +105,8 @@ require 'juke_box_services_pb'
   - ローカルのstubインスタンスのchooseメソッドの実行で、外部サーバのメソッドを呼び出せていることに注目
 ```
 def choose_song
-  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
-  request = Jukebox::TitleRequest.new
+  stub = Kyotorb::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+  request = Kyotorb::TitleRequest.new
 
   response = stub.choose(request)
   response.title
@@ -187,7 +187,7 @@ class LylicEnumerator
     @lylics.each do |lylic|
       # Assuming some downloading or processing.
       sleep 1
-      yield Jukebox::LylicResponse.new(lylic: lylic)
+      yield Kyotorb::LylicResponse.new(lylic: lylic)
     end
   end
 end
@@ -209,8 +209,8 @@ ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby server.rb
 - play_songメソッドの実装
 ```
 def play_song(title)
-  request = Jukebox::SongRequest.new(title: title)
-  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+  request = Kyotorb::SongRequest.new(title: title)
+  stub = Kyotorb::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
 
   responses = stub.play(request)
 
