@@ -73,7 +73,7 @@ p "... running insecurely on #{addr}"
 - ハンドラの登録と終了時の設定
 ```
 server.handle(JukeBoxServiceImpl.new)
-server.run_till_terminated
+server.run_till_terminated_or_interrupted([1, 'int', 'SIGQUIT'])
 ```
 
 ### サーバの起動
