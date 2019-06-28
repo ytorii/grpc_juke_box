@@ -75,3 +75,59 @@ p "... running insecurely on #{addr}"
 server.handle(JukeBoxServiceImpl.new)
 server.run_till_terminated
 ```
+
+### サーバの起動
+- `ruby server.rb`
+  - 以下のように表示されればOK
+  
+```
+ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby server.rb 
+"... running insecurely on 0.0.0.0:50051"
+```
+
+### クライアントの作成
+
+- `client.rb`を開く
+
+- 必要ライブラリの読み込み
+  - サーバと同じインターフェースを読み込んでいることに注目
+  
+```
+require 'grpc'
+require 'juke_box_services_pb'
+```
+
+- 接続先サーバの指定
+
+`HOST = 'localhost:50051'.freeze`
+
+- RPCメソッド
+  - ローカルのstubインスタンスのchooseメソッドの実行で、外部サーバのメソッドを呼び出せていることに注目
+```
+def choose_song
+  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+  request = Jukebox::TitleRequest.new
+
+  response = stub.choose(request)
+  response.title
+end
+```
+
+- 実行メソッド
+```
+def main
+  title = choose_song
+  p title
+end
+
+main
+```
+
+### クライアントの実行
+- `ruby client.rb`
+  - 以下のように何らかの曲名が表示されればOK
+  
+```
+ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby client.rb 
+"The ants go marching"
+```
