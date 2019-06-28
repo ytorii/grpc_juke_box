@@ -229,7 +229,7 @@ end
 ```
 def main
   title = choose
-  play(title)
+  play_song(title)
 end
 
 main
