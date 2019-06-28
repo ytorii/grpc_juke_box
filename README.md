@@ -157,6 +157,7 @@ message LylicResponse {
 ### インターフェース部分のコードの再作成
 
 - `protoc` コマンドでソースコードを再生成
+
 `bundle exec grpc_tools_ruby_protoc -I ./protos--ruby_out=./lib --grpc_out=./lib ./proto/juke_box.proto`
   
 ### サーバ側の実装
