@@ -12,7 +12,7 @@ class SongList
       title: 'The ants go marching',
       lylics: [
         'The ants go marching one by one, hurrah, hurrah',
-        'The ants go marching one by one, hurrah, hurrah',
+        'The ants go marching one by one, hurrah, hurrah!',
         'The ants go marching one by one',
         'The little one stops to suck his thumb',
         'And they all go marching down to the ground to get out of the rain.'
