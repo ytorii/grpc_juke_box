@@ -236,7 +236,7 @@ main
 
 ### クライアントの実行
 - `ruby client.rb`
-  - 以下のように何らかの曲名が表示されればOK
+  - 以下のように何らかの曲名と歌詞が表示されればOK
   
 ```
 ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby client.rb 
