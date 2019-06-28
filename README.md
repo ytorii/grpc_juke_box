@@ -1,7 +1,7 @@
 # grpc_juke_box
 RubyではじめるgRPCハンズオンで使用するコードのリポジトリです。
 
-## ハンズオン手順
+## 曲のランダム選択
 
 ### .protoファイルの作成
 - `protos`ディレクトリを作る
@@ -130,4 +130,119 @@ main
 ```
 ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby client.rb 
 "The ants go marching"
+```
+
+## 曲の再生
+
+### .protoファイルへの追加
+
+- rpc の追加
+
+`rpc Play(SongRequest) returns (stream LylicResponse) {}`
+
+- リクエスト用 Message の追加
+```
+message SongRequest {
+  string title = 1;
+}
+```
+
+- レスポンス用 Message の追加
+```
+message LylicResponse {
+  string lylic = 1;
+}
+```
+
+### インターフェース部分のコードの再作成
+
+- `protoc` コマンドでソースコードを再生成
+`bundle exec grpc_tools_ruby_protoc -I ./protos--ruby_out=./lib --grpc_out=./lib ./proto/juke_box.proto`
+  
+### サーバ側の実装
+
+- `server.rb`を開く
+
+- playメソッドの実装
+
+```
+  def play(request, _call)
+    title = request.title
+    requested_song = SongList::LIST.find { |song| song[:title] == title }
+
+    LylicEnumerator.new(requested_song[:lylics]).each
+
+```
+
+- Streamで渡すEnumeratorの実装
+```
+class LylicEnumerator
+  def initialize(lylics)
+    @lylics = lylics
+  end
+
+  def each
+    return enum_for(:each) unless block_given?
+
+    @lylics.each do |lylic|
+      # Assuming some downloading or processing.
+      sleep 1
+      yield Jukebox::LylicResponse.new(lylic: lylic)
+    end
+  end
+end
+```
+
+### サーバの起動
+- `ruby server.rb`
+  - 以下のように表示されればOK
+  
+```
+ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby server.rb 
+"... running insecurely on 0.0.0.0:50051"
+```
+
+### クライアント側の実装
+
+- `client.rb`を開く
+
+- play_songメソッドの実装
+```
+def play_song(title)
+  request = Jukebox::SongRequest.new(title: title)
+  stub = Jukebox::JukeBox::Stub.new(HOST, :this_channel_is_insecure)
+
+  responses = stub.play(request)
+
+  puts "Now playing: #{title}"
+
+  responses.each do |res|
+    puts res.lylic
+  end
+
+  puts 'Thank you for listening!'
+end
+```
+
+- 実行メソッドの変更
+```
+def main
+  title = choose
+  play(title)
+end
+
+main
+```
+
+### クライアントの実行
+- `ruby client.rb`
+  - 以下のように何らかの曲名が表示されればOK
+  
+```
+ytorii@ytorii-PS42-8RB:~/ruby/grpc_enum$ ruby client.rb 
+Now playing: Baa, Baa, Black Sheep
+Baa, baa, black sheep, Have you any wool?
+Yes, sir, yes, sir,
+Three bags full
+Thank you for listening!
 ```
