@@ -229,7 +229,7 @@ end
 - 実行メソッドの変更
 ```
 def main
-  title = choose
+  title = choose_song
   play_song(title)
 end
 
