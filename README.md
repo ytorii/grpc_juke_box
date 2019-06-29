@@ -31,7 +31,8 @@ message TitleResponse {
 - `lib`ディレクトリを作成
 
 - `protoc` コマンドでソースコードを生成
-`bundle exec grpc_tools_ruby_protoc -I ./protos--ruby_out=./lib --grpc_out=./lib ./proto/juke_box.proto`
+
+`bundle exec grpc_tools_ruby_protoc -I ./protos --ruby_out=./lib --grpc_out=./lib ./protos/juke_box.proto`
 
 - `lib`に2種類のファイルが生成されているのを確認
   - `juke_box_pb.rb`
