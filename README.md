@@ -26,6 +26,7 @@ message TitleResponse {
 
 ### インターフェース部分のコードの生成
 - `grpc` `grpc-tools` gem のインストール
+
 `bundle install`
 
 - `lib`ディレクトリを作成
